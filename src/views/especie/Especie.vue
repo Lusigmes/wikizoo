@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getAll } from '@/api/EspecieService';
+import { getAll, deletes } from '@/api/EspecieService';
 import {Especie}  from '@/types';
 import { DeepReadonly } from 'vue';
 import {onMounted, reactive, ref} from 'vue'
@@ -36,12 +36,23 @@ const getEspecie = async  () => {
         throw error;
     }
   }
-  console.log("ok",listaEspecies)
-/* const pageCount = () => {
-  return ( Math.ceil( listaEspecies.length/ itemsPerPage))
 
-} */
-onMounted(() => {  
+  const deleteEspecie = async (id:number) => {
+    try {
+        await deletes(id)        
+        getEspecie();
+      }catch (error) { 
+        console.error(error)
+        throw error;
+    }
+  }
+
+
+
+
+
+
+  onMounted(() => {  
    getEspecie(); 
 });
   
@@ -92,7 +103,7 @@ onMounted(() => {
             <v-icon>mdi-pencil</v-icon>
           </v-btn> -->
           <v-spacer></v-spacer>
-          <v-btn  color="red-accent-1">   
+          <v-btn  color="red-accent-1" @click="deleteEspecie(item.id)">   
             <v-icon>mdi-delete</v-icon> 
           </v-btn>
           <v-spacer></v-spacer>

@@ -1,5 +1,6 @@
 import { Especie } from "@/types";
 import httpClient from "./endpoint";
+import EspecieDetalhesVue from "@/views/especie/EspecieDetalhes.vue";
 
 export const create = async (especie: any) : Promise<Especie> => {
   try {
@@ -33,9 +34,6 @@ export const getAll = async (): Promise<Especie | any> => {
          if (!response.ok) {
           throw new Error(`Erro ao obter uma espécie: ${response.status}`);
         }
-        //const data = await response.json();
-       // console.log("EspecieService: get: ", data)
-        //console.log(response.json())
         return response.json();
 
   } catch (error) {
@@ -44,4 +42,18 @@ export const getAll = async (): Promise<Especie | any> => {
   }
 }
 
+export const deletes = async (id: number): Promise<Especie | any> => {
+  try{
+    const response = await fetch(`${httpClient}/${id}`,{
+      method: 'delete'
+    })
+    if (!response.ok) {
+      throw new Error(`Erro ao deletar uma espécie: ${response.status}`);
+    }
+  } catch (error) {
+      console.error("Erro ao excluir espécie", error);
+    throw error;
+}
+
+}
 

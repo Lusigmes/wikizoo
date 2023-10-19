@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { Especie } from '@/types/index'
-import  {create}  from '@/api/EspecieService'
+import  {create, getAll}  from '@/api/EspecieService'
 import { Reino, Conservacao, Continentes} from '@/types/enums'
 import { onMounted } from 'vue';
 import { reactive } from 'vue';
@@ -84,9 +84,7 @@ const postEspecie = async () => {
 
     
     const response = await create(inputEspecie)
-    
-    console.log("componente vue:", response)
-      
+          
     } catch (error) {
         console.error(error);
     }
