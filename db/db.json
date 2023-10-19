@@ -1,0 +1,125 @@
+{
+  "especies": [
+    {
+      "id": 1697592408340,
+      "nome_comum": "aaa",
+      "nome_cientifico": "sf",
+      "autoridade_taxonomica": "asffa",
+      "reino": "Fungi",
+      "status_conservacao": "Ameaçado",
+      "continente_localizado": [
+        "África",
+        "America do Sul",
+        "America do Norte"
+      ],
+      "tamanho_medio": "124",
+      "descricao": "Descreva caracteríasfasfasticas gerais necessárias."
+    },
+    {
+      "id": 1697592547562,
+      "nome_comum": "GATO",
+      "nome_cientifico": "GATINHO",
+      "autoridade_taxonomica": "LUISI",
+      "reino": "Protista",
+      "status_conservacao": "Nâo Ameaçado",
+      "continente_localizado": [
+        "America do Sul",
+        "America do Norte"
+      ],
+      "tamanho_medio": "100",
+      "descricao": "ABONITO E GOSTOSO"
+    },
+    {
+      "id": 1697594000001,
+      "nome_comum": "Gatinho",
+      "nome_cientifico": "miu",
+      "autoridade_taxonomica": "luis",
+      "reino": "Animalia",
+      "status_conservacao": "Seguro",
+      "continente_localizado": [
+        "Oceania",
+        "America do Sul"
+      ],
+      "tamanho_medio": "15",
+      "descricao": "branaco"
+    },
+    {
+      "id": 1697594377966,
+      "nome_comum": "",
+      "nome_cientifico": "",
+      "autoridade_taxonomica": "",
+      "reino": null,
+      "status_conservacao": null,
+      "continente_localizado": null,
+      "tamanho_medio": 0,
+      "descricao": "Descreva características gerais necessárias."
+    },
+    {
+      "id": 1697598234115,
+      "nome_comum": " ",
+      "nome_cientifico": " ",
+      "autoridade_taxonomica": " ",
+      "reino": "Selecione",
+      "status_conservacao": "Selecione",
+      "continente_localizado": [
+        "America do Norte"
+      ],
+      "tamanho_medio": " ",
+      "descricao": " "
+    },
+    {
+      "id": 1697599145729,
+      "nome_comum": "Miu",
+      "nome_cientifico": "Gatinho pspsps",
+      "autoridade_taxonomica": "Luis Gomes",
+      "reino": "Monera",
+      "status_conservacao": "Nâo Ameaçado",
+      "continente_localizado": [
+        "America do Sul",
+        "America do Norte",
+        "África"
+      ],
+      "tamanho_medio": "10",
+      "descricao": "Muito bonitinho"
+    },
+    {
+      "id": 1697675924660,
+      "nome_comum": "LUIS",
+      "nome_cientifico": "GOMES",
+      "autoridade_taxonomica": "124",
+      "reino": "Monera",
+      "status_conservacao": "Extinto",
+      "continente_localizado": [
+        "America do Sul",
+        "África"
+      ],
+      "tamanho_medio": "1234",
+      "descricao": "FEIAO"
+    },
+    {
+      "id": 1697733746090,
+      "nome_comum": "",
+      "nome_cientifico": "",
+      "autoridade_taxonomica": "",
+      "reino": "Animalia",
+      "status_conservacao": "Em Perigo",
+      "continente_localizado": [
+        "África"
+      ],
+      "tamanho_medio": "",
+      "descricao": ""
+    },
+    {
+      "id": 1697737185449,
+      "nome_cientifico": "feio",
+      "autoridade_taxonomica": "bonito",
+      "reino": "Plantae",
+      "status_conservacao": "Em Perigo",
+      "continente_localizado": [
+        "África"
+      ],
+      "tamanho_medio": "1",
+      "descricao": "Descreva características gerais necessárias."
+    }
+  ]
+}
