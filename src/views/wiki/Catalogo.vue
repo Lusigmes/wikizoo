@@ -2,6 +2,7 @@
 import CatalogoForm from "./CatalogoForm.vue"
 import { reactive} from 'vue';
 import Especie from "@/views/especie/Especie.vue"
+
     const itensBreadcrumb = reactive([
         {
             title: 'Home',
@@ -33,7 +34,7 @@ import Especie from "@/views/especie/Especie.vue"
         <CatalogoForm/>
     </v-card>
     
-    <v-card class="mt-5" elevation="5">
+    <v-card class="mt-5" elevation="1">
         <Especie/>
     </v-card>
     

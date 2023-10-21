@@ -64,17 +64,13 @@ const items = ref([
                                                         </RouterLink>
                                                     </v-list-item-title>
 
-                                                            <!-- <v-btn-details @click="$router.push({path: `/atendimento/pacientes/${item.columns.id}`})" /> -->
                             </v-list-item>
 
                         </v-list>
                     </v-menu>
                 </div>                            
                     
-                    <v-btn icon class="bg-blue-accent-3 mr-6 mt-2">
-                        <v-icon>mdi-magnify</v-icon>
-                    </v-btn>
-
+                  
                 
             </v-toolbar>
         </v-card>

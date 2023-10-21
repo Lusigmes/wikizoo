@@ -23,7 +23,17 @@ export const create = async (especie: any) : Promise<Especie> => {
     throw error;
   }
 }
+export const getById = async (id: number): Promise<Especie | any> => {
+//1697906249975
+  try {
+    const response = await fetch(`${httpClient}/${id}`)
+    return response.json();
+  } catch (error) {
+    console.error("Erro ao obter especie",error);
+    console.error(error)
+  }
 
+}
 
 export const getAll = async (): Promise<Especie | any> => {
 

@@ -18,6 +18,18 @@ const routes: RouteRecordRaw[] = [
                         name: 'Catalogo',
                         component: () => import('@/views/wiki/Catalogo.vue')
                     },
+                    {
+                        path: 'especie',
+                        name: 'Especie',
+                        component: () => import('@/views/especie/Especie.vue')
+                    },
+                    {
+                        path: 'especie/:id',
+                        name: 'EspecieDetalhes',
+                        component: () => import('@/views/especie/EspecieDetalhes.vue')
+                    },
+                    
+                    
                     /* especie, especieDetalhes */
                 ]
             },

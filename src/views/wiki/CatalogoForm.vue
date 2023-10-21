@@ -3,8 +3,15 @@ import { ref } from 'vue';
 import { Especie } from '@/types/index'
 import  {create, getAll}  from '@/api/EspecieService'
 import { Reino, Conservacao, Continentes} from '@/types/enums'
-import { onMounted } from 'vue';
 import { reactive } from 'vue';
+import { onMounted } from 'vue';
+
+
+
+onMounted(() => {  
+  getEspecie(); 
+});
+  
 
 let dialog = ref(false);
 
@@ -12,7 +19,11 @@ const maxDescricao = 255;
 
 const state = reactive ({
   especie: {} as Especie
+
 })
+
+
+const listaEspecies = ref<Array<Especie>>([]);
 
 state.especie.descricao = "Descreva características gerais necessárias.";
 
@@ -55,16 +66,28 @@ const resetDialog = () => {
 }
 
 
+async function getEspecie() {
+  try {
+        const response = await getAll();
+        listaEspecies.value = response;
+       // console.log("[CATALOGO DEBUG].:", listaEspecies)
+    } catch (error) { 
+        console.error(error)
+        throw error;
+    }
+}
+
 const postEspecie = async () => {
 
   try {
     const nomeComum = state.especie.nome_comum.trim();
     const nomeCientifico = state.especie.nome_cientifico.trim();
+    const autoridadeTaxonomica = state.especie.autoridade_taxonomica.trim();
     const reino = reinoSelecionado.value;
     const statusConservacao = statusSelecionado.value;
 
-    if (!nomeComum || !nomeCientifico || !reino || !statusConservacao) {
-      console.error('Preencha todos os campos obrigatórios.');
+    if (!nomeComum || !nomeCientifico || !autoridadeTaxonomica || !reino || !statusConservacao) {
+      alert('Preencha todos os campos obrigatórios.');
       return;
     }
 
@@ -72,7 +95,7 @@ const postEspecie = async () => {
 
     const inputEspecie = {
       id: idGerado,
-      nome_comum: state.especie.nome_comum.trim,
+      nome_comum: state.especie.nome_comum,
       nome_cientifico: state.especie.nome_cientifico,
       autoridade_taxonomica: state.especie.autoridade_taxonomica,
       reino: reinoSelecionado.value,
@@ -83,12 +106,13 @@ const postEspecie = async () => {
     }
 
     
-    const response = await create(inputEspecie)
-          
+    const response = await create(inputEspecie);
+    await getEspecie();
+    resetDialog();
+    
     } catch (error) {
         console.error(error);
     }
-    resetDialog();
 }
 
 
@@ -104,16 +128,14 @@ const postEspecie = async () => {
               width="1024"
               >
             <template v-slot:activator="{ props }">
-              <v-btn
-                color="green-lighten-1"
-                :="props"
-                > 
-                
+              <v-btn color="green-lighten-1" :="props"> 
                 <v-icon class="mr-2"> mdi-plus </v-icon>
                 Cadastrar Especie
               </v-btn>
-            </template>
 
+
+            </template>
+            
             <v-card>
               <v-row class="mt-2 ml-5 mr-5">
 
