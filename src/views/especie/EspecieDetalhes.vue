@@ -69,8 +69,9 @@
 
       <v-window-item value="alimentacao">
         <v-card class="ma-4 pa-4 bg-light-green-darken-1">
-          <h3>Alimentação</h3>
-          <p>{{ state.especie.continente_localizado || 'Informação não disponível' }}</p>
+          <h3>Alimentação</h3>        
+          <p>{{ (Array.isArray(state.especie.continente_localizado) ? state.especie.continente_localizado.join(', ') : state.especie.continente_localizado ) || 'Informação não disponível'}}</p>
+
         </v-card>
       </v-window-item>
 

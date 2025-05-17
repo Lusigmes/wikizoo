@@ -70,14 +70,6 @@ const resetDialog = () => {
   state.continenteSelecionado = [];
 }
 
-  const carregarEspecies = async() => {
-    try {
-      await especieStore.carregarEspecies();
-    } catch (error) {
-      console.error("Erro ao carregar espécie: ", error)
-    }
-  }
-
   const isSave = ref(false);
   
   const salvarEspecie = async () => {
@@ -100,6 +92,7 @@ const resetDialog = () => {
         return;
       }
          
+      
         const inputEspecie: Especie = {
           id: props.modo === 'atualizar' ? state.especie.id : Date.now(),
           nome_comum: nomeComumEspecie,
@@ -156,9 +149,8 @@ watch(
 
 
 onMounted(async () => {
-  await carregarEspecies();
-  resetDialog();
   if(props.especieEdicao){
+    resetDialog();
     preencherEdicao(props.especieEdicao)
   }
 });

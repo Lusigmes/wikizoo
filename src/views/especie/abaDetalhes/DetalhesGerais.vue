@@ -7,21 +7,23 @@
   const props = defineProps<{
     especie: Especie
   }>();
+  
   const especieVisivel = ref({ ...props.especie });
   const dialog = ref(false);
   const especieAtualSelecionada = ref<Especie | null>(null);
 
   const carregarDadosEspeciesNoForm = () => { //carregar dados da especie atual via emit
-    especieAtualSelecionada.value = {...props.especie};
+    especieAtualSelecionada.value = {...especieVisivel.value};
     dialog.value = true
   }
   const atualizarEspecie = (especieAtualizada: Especie) => {
     especieVisivel.value = { ...especieAtualizada };
   };
-  
+
   watch(()=> props.especie, (nova) => {
     especieVisivel.value = {...nova}
   }, {immediate: true})
+  
 </script>
 
 <template>
@@ -74,11 +76,6 @@
         <p>{{ especieVisivel.descricao || 'Informação não disponível' }}</p>
       </v-col>
     </v-row>
-    <!-- <v-row justify="end" class="mt-4">
-      <v-btn class="mx-1" color="primary" size="small" @click="abrirEditarEspecie">
-        <v-icon left >mdi-pencil</v-icon>
-      </v-btn>
-    </v-row> -->
   </v-card>
     <CatalogoForm
     v-model:dialog="dialog"
