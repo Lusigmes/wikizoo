@@ -1,54 +1,36 @@
 <script setup lang="ts">
-import { getById } from '@/api/EspecieService';
-import { Especie } from '@/types';
-import { onMounted } from 'vue';
-import { reactive } from 'vue';
-import { useRoute } from 'vue-router';
+    import { itemListaEspecieDetalhes } from '@/api/ItemService';
+    import { useEspecieStore } from '@/store/EspecieStore';
+    import { Especie } from '@/types';
+    import { onMounted, reactive, ref } from 'vue';
+    import { useRoute } from 'vue-router';
+    import DetalhesGerais from './abaDetalhes/DetalhesGerais.vue';
 
-const route = useRoute()
-const idR = route.params.id
-
-const state = reactive({
-    especie: {} as Especie
-})
-
-    const itensBreadcrumb = reactive([
-        {
-            title: 'Home',
-            disabled: false,
-            href: '/home',
-        },
-        {
-            title: 'Wiki',
-            disabled: false,
-            href: '/wiki/catalogo',
-        },
-        {
-            title: '',
-            disabled: true,
-            href: '#',
-        },
-    ]);
-
-async function getEspecieID(id: number) {
-  try {
-    const response = await getById(id);
-    state.especie = response
+    const route = useRoute()
+    const idR = route.params.id
+    const especieStore = useEspecieStore()
+    const itensBreadcrumb = reactive(itemListaEspecieDetalhes())
+    const tab = ref('aba-detalhes-gerais')
     
-    itensBreadcrumb[itensBreadcrumb.length - 1].title = state.especie.nome_comum;
+    const state = reactive({
+        especie: {} as Especie
+    })
     
-    //console.log("[ESPECIE_DETALHES DEBUG].:", state.especie)
-    } catch (error) { 
-        console.error(error)
-        throw error;
+    const carregarEspecie = async (id:number) => {
+       try {
+            const response = await especieStore.buscarEspeciePorId(id);
+            state.especie = response
+            itensBreadcrumb[itensBreadcrumb.length - 1].title = state.especie.nome_comum;
+        } catch (error) { 
+            console.error("Erro ao encontrar espécie por id: ", error)
+
+        }
     }
-}
 
-onMounted(() => {  
-    const idAsNumber = parseInt(idR as string, 10); 
-    getEspecieID(idAsNumber); 
-});
-  
+    onMounted(async () => {
+        const idAsNumber = parseInt(idR as string, 10); 
+        await carregarEspecie(idAsNumber); });
+
 
 </script>
 
@@ -64,5 +46,39 @@ onMounted(() => {
         </v-breadcrumbs>
 
     </v-card>
-    <h1>{{ state.especie.nome_cientifico }}</h1>
+     <v-tabs v-model="tab" class="bg-light-green-darken-2" dark>
+        <v-tab value="aba-detalhes-gerais">Detalhes Gerais</v-tab>
+        <v-tab value="habitat">Habitat</v-tab>
+        <v-tab value="alimentacao">Alimentação</v-tab>
+        <v-tab value="conservacao">Conservação</v-tab>
+    </v-tabs>
+
+    <v-window v-model="tab">
+      <v-window-item  value="aba-detalhes-gerais">
+        <v-card class="ma-4 pa-4 bg-light-green-darken-1">
+          <DetalhesGerais v-if="state.especie.id" :especie="state.especie" />
+        </v-card>
+      </v-window-item>
+
+      <v-window-item value="habitat">
+        <v-card class="ma-4 pa-4 bg-light-green-darken-1">
+          <h3>Habitat</h3>
+          <p>{{ state.especie.descricao || 'Informação não disponível' }}</p>
+        </v-card>
+      </v-window-item>
+
+      <v-window-item value="alimentacao">
+        <v-card class="ma-4 pa-4 bg-light-green-darken-1">
+          <h3>Alimentação</h3>
+          <p>{{ state.especie.continente_localizado || 'Informação não disponível' }}</p>
+        </v-card>
+      </v-window-item>
+
+      <v-window-item value="conservacao">
+        <v-card class="ma-4 pa-4 bg-light-green-darken-1">
+          <h3>Status de Conservação</h3>
+          <p>{{ state.especie.status_conservacao || 'Informação não disponível' }}</p>
+        </v-card>
+      </v-window-item>
+    </v-window>
 </template>

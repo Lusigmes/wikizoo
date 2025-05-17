@@ -8,6 +8,7 @@ export interface Especie{
     descricao: string
     continente_localizado: string[],
     tamanho_medio: Number
+    imagem_url?: string | null | undefined
     /* filo: string,
     classe: string,
     ordem: string,

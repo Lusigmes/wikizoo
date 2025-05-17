@@ -1,50 +1,54 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, reactive, onMounted, watch } from 'vue';
 import { Especie } from '@/types/index'
-import  {create, getAll}  from '@/api/EspecieService'
 import { Reino, Conservacao, Continentes} from '@/types/enums'
-import { reactive } from 'vue';
-import { onMounted } from 'vue';
+import { useEspecieStore } from '@/store/EspecieStore';
 
+const especieStore = useEspecieStore();
+const emit = defineEmits(['update:dialog'])
+type Modo = 'cadastrar' | 'atualizar';
 
+const props = defineProps<{
+  especieEdicao?: Especie | null,
+  dialog?: boolean,
+  modo? : Modo | string
+}>();
 
-onMounted(() => {  
-  getEspecie(); 
+let dialog = ref(props.dialog || false);
+watch(() => props.especieEdicao, (novaEspecie) => {
+  if (novaEspecie) {
+    preencherEdicao(novaEspecie);
+  }
 });
-  
+  // executa quando abre ou fecha o dialog(cadastrar/editar especie)
+watch(dialog, (val) =>{
+  emit('update:dialog', val);
+  console.log("abriu ou fechou")
+});
 
-let dialog = ref(false);
+const state= reactive ({
+  especie: {} as Especie,
+  maxDescricao: 255,
+  reinoSelecionado: null as Reino | null,
+  statusSelecionado: null as Conservacao | null,
+  continenteSelecionado: [] as Continentes[],
 
-const maxDescricao = 255;
+  opcoesReino: Object.values(Reino),
+  opcoesStatus: Object.values(Conservacao),
+  opcoesContinentes : Object.values(Continentes),
+});
 
-const state = reactive ({
-  especie: {} as Especie
-
-})
-
-
-const listaEspecies = ref<Array<Especie>>([]);
-
-state.especie.descricao = "Descreva características gerais necessárias.";
-
-state.especie.reino = Object.values(Reino).map((value) => value.toString());
-const reinoSelecionado = ref<Reino | null>(null); 
-
-state.especie.status_conservacao = Object.values(Conservacao).map((value) => value.toString()); 
-const statusSelecionado = ref<Conservacao | null>(null); 
-
-state.especie.continente_localizado = Object.values(Continentes).map((value) => value.toString());
-const continenteSelecionado = ref<Continentes[] | null>(null); 
-
+const preencherEdicao = (especie: Especie) => {
+  state.especie = {...especie};
+  state.reinoSelecionado = especie.reino[0] as Reino ?? null;
+  state.statusSelecionado = especie.status_conservacao[0] as Conservacao ?? null;
+  state.continenteSelecionado = especie.continente_localizado as Continentes[] ?? [];
+};
 
 const limitarDescricao = () => {                                                                                 
-  if(state.especie.descricao.length > maxDescricao){
-    state.especie.descricao = state.especie.descricao.slice(0, maxDescricao);
+  if(state.especie.descricao.length > state.maxDescricao){
+    state.especie.descricao = state.especie.descricao.slice(0, state.maxDescricao);
   }
-}
-
-const openDialog = () => {
-  dialog.value = true;
 };
 
 const closeDialog = () => {
@@ -53,67 +57,90 @@ const closeDialog = () => {
 };
 
 const resetDialog = () => {
-  state.especie.nome_comum = "";
-  state.especie.nome_cientifico = ""; 
-  state.especie.autoridade_taxonomica = "";
-  reinoSelecionado.value = null;
-  statusSelecionado.value = null;
-  continenteSelecionado.value = null;
-  state.especie.tamanho_medio = 0;
-  state.especie.descricao = "Descreva características gerais necessárias.";
-  dialog.value = false;
+  state.especie = {
+    id: 0,
+    nome_comum: '',
+    nome_cientifico: '',
+    autoridade_taxonomica: '',
+    reino: [],
+    status_conservacao: [],
+    continente_localizado: [] as Continentes[],
+    tamanho_medio: 0,
+    descricao: 'Descreva características gerais necessárias.',
+    imagem_url: ''
+  };
 
+  state.statusSelecionado = null;
+  state.reinoSelecionado = null;
+  state.continenteSelecionado = [];
 }
 
-
-async function getEspecie() {
-  try {
-        const response = await getAll();
-        listaEspecies.value = response;
-       // console.log("[CATALOGO DEBUG].:", listaEspecies)
-    } catch (error) { 
-        console.error(error)
-        throw error;
-    }
-}
-
-const postEspecie = async () => {
-
-  try {
-    const nomeComum = state.especie.nome_comum.trim();
-    const nomeCientifico = state.especie.nome_cientifico.trim();
-    const autoridadeTaxonomica = state.especie.autoridade_taxonomica.trim();
-    const reino = reinoSelecionado.value;
-    const statusConservacao = statusSelecionado.value;
-
-    if (!nomeComum || !nomeCientifico || !autoridadeTaxonomica || !reino || !statusConservacao) {
-      alert('Preencha todos os campos obrigatórios.');
-      return;
-    }
-
-    const idGerado = Date.now();
-
-    const inputEspecie = {
-      id: idGerado,
-      nome_comum: state.especie.nome_comum,
-      nome_cientifico: state.especie.nome_cientifico,
-      autoridade_taxonomica: state.especie.autoridade_taxonomica,
-      reino: reinoSelecionado.value,
-      status_conservacao: statusSelecionado.value,
-      continente_localizado: continenteSelecionado.value,
-      tamanho_medio:state.especie.tamanho_medio,
-      descricao: state.especie.descricao 
-    }
-
-    
-    const response = await create(inputEspecie);
-    await getEspecie();
-    resetDialog();
-    
+  const carregarEspecies = async() => {
+    try {
+      await especieStore.carregarEspecies();
     } catch (error) {
-        console.error(error);
+      console.error("Erro ao carregar espécie: ", error)
     }
-}
+  }
+
+  // const emit = defineEmits(['animalAdicionado'])
+  const postEspecie = async () => {
+
+    try {
+      const response = await especieStore.carregarEspecies();
+      console.log("carregando no post",response)
+
+      const nomeComumEspecie = state.especie.nome_comum.trim();
+      const nomeCientificoEspecie = state.especie.nome_cientifico.trim();
+      const autoridadeTaxonomicaEspecie = state.especie.autoridade_taxonomica.trim();
+      const reinoEspecie = state.reinoSelecionado;
+      const statusConservacaoEspecie = state.statusSelecionado;
+      const continenteLocalizadoEspecie = state.continenteSelecionado;
+      const tamanhoEspecie = state.especie.tamanho_medio;
+      const descricaoEspecie = state.especie.descricao;
+
+      if (!nomeComumEspecie || !nomeCientificoEspecie || !autoridadeTaxonomicaEspecie || !reinoEspecie || !statusConservacaoEspecie) {
+        alert('Preencha todos os campos obrigatórios.');
+        return;
+      }
+
+      const idGerado = Date.now();
+
+      const inputEspecie: any = {
+        id: idGerado,
+        nome_comum: nomeComumEspecie,
+        nome_cientifico: nomeCientificoEspecie,
+        autoridade_taxonomica: autoridadeTaxonomicaEspecie,
+        reino: reinoEspecie,
+        status_conservacao: statusConservacaoEspecie,
+        continente_localizado: continenteLocalizadoEspecie,
+        tamanho_medio: tamanhoEspecie,
+        descricao: descricaoEspecie,
+        imagem_url: state.especie.imagem_url ?? " "
+      }
+
+      if(props.modo === 'atualizar' && state.especie.id){
+        await especieStore.adicionarEspecie(inputEspecie);
+        alert("ATUALIZADO COM SUCESSO!")
+      }else{
+        await  especieStore.adicionarEspecie(inputEspecie)
+        alert("ADICIONADO COM SUCESSO!")
+      }
+      // emit('animalAdicionado')
+      closeDialog();
+      
+      } catch (error) {
+          console.error(error);
+      }
+  }
+
+onMounted(async () => {
+  await carregarEspecies();
+  resetDialog();
+  if(props.especieEdicao){
+    preencherEdicao(props.especieEdicao)
+  }
+});
 
 
 </script>
@@ -127,21 +154,21 @@ const postEspecie = async () => {
               persistent
               width="1024"
               >
-            <template v-slot:activator="{ props }">
-              <v-btn color="green-lighten-1" :="props"> 
-                <v-icon class="mr-2"> mdi-plus </v-icon>
-                Cadastrar Especie
-              </v-btn>
-
-
-            </template>
+          <template v-slot:activator="{ props: activatorProps }">
+            <v-btn
+              color="green-lighten-1"
+              v-bind="activatorProps"
+            >
+              {{ props.modo === 'atualizar' ? 'Editar' : 'Cadastrar Espécie' }}
+            </v-btn>
+          </template>
             
             <v-card>
               <v-row class="mt-2 ml-5 mr-5">
 
                 <v-col cols="6">
                   <v-card-title>
-                    <span class="text-h5">CADASTRE UMA ESPÉCIE</span>
+                    <span class="text-h5">{{ props.modo === 'atualizar' ? 'ATUALIZAR ESPÉCIE' : 'CADASTRE UMA ESPÉCIE' }}</span>
                   </v-card-title>
                 </v-col>
                 
@@ -169,7 +196,7 @@ const postEspecie = async () => {
                       variant="text"
                       @click="postEspecie"
                     >
-                      Salvar
+                       {{ props.modo === 'atualizar' ? 'Atualizar' : 'Salvar' }}
                       <v-icon
                         end
                         icon="mdi-checkbox-marked-circle"
@@ -221,6 +248,8 @@ const postEspecie = async () => {
                               <v-text-field
                               v-model="state.especie.tamanho_medio"
                               label="Tamanho Médio ( cm )"
+                              type="number"
+                              min="0"
                             ></v-text-field>
                           </v-col>
 
@@ -232,8 +261,8 @@ const postEspecie = async () => {
                           <v-select
                               label="Reino*"
                               hint="Qual o reino desta espécie?"
-                              v-model="reinoSelecionado"
-                              :items="state.especie.reino"
+                              v-model="state.reinoSelecionado"
+                              :items="state.opcoesReino"
                               persistent-hint
                               required
                             ></v-select>
@@ -246,25 +275,19 @@ const postEspecie = async () => {
                           <v-select
                               label="Status Conservação*"
                               hint="Qual a situação de conservação da espécie?"
-                              v-model="statusSelecionado"
-                              :items="state.especie.status_conservacao"
+                              v-model="state.statusSelecionado"
+                              :items="state.opcoesStatus"
                               persistent-hint
                               required
                             ></v-select>
                           </v-col>
 
-                         
-
-                        
-                          
                           <v-col
                             cols="12"
-                         
-                            
                             >
                             <v-select
-                              v-model="continenteSelecionado"
-                              :items="state.especie.continente_localizado"
+                              v-model="state.continenteSelecionado"
+                              :items="state.opcoesContinentes"
                               label="Continente(s) Localizado(s)"
                               multiple
                               chips
@@ -279,14 +302,9 @@ const postEspecie = async () => {
                               variant="filled"
                               label="Descrição Geral"
                               v-model="state.especie.descricao"
-                              min="1" max="255"
                               @input="limitarDescricao"
                             ></v-textarea>
                           </v-col>
-
-                          
-                          
-
 
                   </v-row>
                 </v-container>

@@ -11,6 +11,7 @@
     "@mdi/font": "5.9.55",
     "backend": "^0.0.0",
     "core-js": "^3.8.3",
+    "pinia": "^3.0.2",
     "roboto-fontface": "*",
     "vue": "^3.2.13",
     "vue-router": "^4.2.5",

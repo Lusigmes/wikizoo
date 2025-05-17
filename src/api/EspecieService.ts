@@ -1,6 +1,5 @@
 import { Especie } from "@/types";
 import httpClient from "./endpoint";
-import EspecieDetalhesVue from "@/views/especie/EspecieDetalhes.vue";
 
 export const create = async (especie: any) : Promise<Especie> => {
   try {

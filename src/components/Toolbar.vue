@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import Home from '@/views/Home.vue'
-import { reactive} from 'vue';
+
  
 const items = ref([
         {title: 'Catálogo', link:'/wiki/catalogo'},
@@ -14,9 +13,8 @@ const items = ref([
         ...tooltip,
     });
 
-    const router = useRouter();
 
-
+    const img = ref("Explorar");
     
 </script>
 
@@ -27,13 +25,13 @@ const items = ref([
             <v-toolbar  dense class="bg-grey-lighten-3 mt-3" elevation="2"
                         extended extension-height="10" >
                 
-               <RouterLink :to="'/home'">
+               <RouterLink :to="'/'">
                 <v-avatar class="ml-6 mt-2" rounded="0" size="50">
                     <v-img src="@/assets/img/biodiversidade.png" />
                 </v-avatar>
                </RouterLink>
 
-                <v-toolbar-title class="text-h4 ml-2 mt-2 font-weight-bold text-green">WikiZoo</v-toolbar-title>
+                <v-toolbar-title class="text-h4 ml-2 mt-2 font-weight-bold text-green"></v-toolbar-title>
               
                                         <!-- MENU DE ROTAS ? -->
                 <div class="text-center">
@@ -44,11 +42,11 @@ const items = ref([
                                 <template v-slot:activator="{ props: tooltip }">
                                     <v-btn  class="bg-blue-accent-3 mr-6 mt-2" color="black-accent-3" elevation="1"
                                         :="mergeProps(menu, tooltip)" >
-                                        Navegar em WikiZoo
+                                        <div> {{ img }}</div>
                                      </v-btn>
                                 </template>
                                             
-                                <span>BEM VINDO</span>
+                                <span>BEM VINDO A WIKI</span>
                             </v-tooltip>
                         </template>
                                         

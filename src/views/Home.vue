@@ -1,15 +1,10 @@
 <script setup lang="ts">
+    import { itemListaHome } from '@/api/ItemService';
     import { reactive} from 'vue';
 
 
-    const itensBreadcrumb = reactive([
-        {
-            title: 'Home',
-            disabled: true,
-            href: '/home',
-        }
-       
-    ]);
+    const itensBreadcrumb = reactive(itemListaHome())
+        
 </script>
 
 <template>
@@ -26,6 +21,6 @@
     </v-card>
     
     <v-card>
-        <h1>CONTEUDO HOME</h1>
+        <h1>CONTEUDO HOME aqe</h1>
     </v-card>
 </template>

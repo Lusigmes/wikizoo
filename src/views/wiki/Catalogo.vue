@@ -1,20 +1,16 @@
 <script setup lang="ts">
 import CatalogoForm from "./CatalogoForm.vue"
-import { reactive} from 'vue';
+import { reactive, ref} from 'vue';
 import Especie from "@/views/especie/Especie.vue"
+import { itemListaCatalogo } from "@/api/ItemService";
 
-    const itensBreadcrumb = reactive([
-        {
-            title: 'Home',
-            disabled: false,
-            href: '/home',
-        },
-        {
-            title: 'Wiki',
-            disabled: true,
-            href: '#',
-        },
-    ]);
+const itensBreadcrumb = reactive(itemListaCatalogo());
+const especieRef = ref();
+
+// function atualizarListaEspecies() {
+//   especieRef.value?.carregarEspecies(); // chama o método do componente Especie
+// }
+
 </script>
 
 <template>
@@ -31,11 +27,11 @@ import Especie from "@/views/especie/Especie.vue"
     </v-card>
 
     <v-card elevation="0">
-        <CatalogoForm/>
+        <CatalogoForm modo="cadastrar"/>
     </v-card>
     
     <v-card class="mt-5" elevation="1">
-        <Especie/>
+        <Especie ref="especieRef"/>
     </v-card>
     
 </template>
