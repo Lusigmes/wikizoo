@@ -70,7 +70,16 @@ onMounted(async () => {
       v-for="item in listaEspeciesOrdenada"
         :key="item.id"
         >
-        <td>IMAGEM</td>
+        <!-- dentro da lista de especies -->
+        <td><v-img
+          v-if="item.imagem_url"
+          :src="item.imagem_url"
+          max-width="100"
+          max-height="50"
+          class="rounded mx-auto"
+          cover
+        ></v-img>
+        <p v-else>Não possui imagem</p></td>
         <td>{{ item.nome_comum }}</td>
         <td>{{ item.nome_cientifico }}</td>
         <td>{{ item.autoridade_taxonomica }}</td>

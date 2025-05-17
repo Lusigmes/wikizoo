@@ -27,7 +27,7 @@ const items = ref([
                 
                <RouterLink :to="'/'">
                 <v-avatar class="ml-6 mt-2" rounded="0" size="50">
-                    <v-img src="@/assets/img/biodiversidade.png" />
+                    <v-img src="@/assets/img/wild-animals.png" />
                 </v-avatar>
                </RouterLink>
 
@@ -46,7 +46,7 @@ const items = ref([
                                      </v-btn>
                                 </template>
                                             
-                                <span>BEM VINDO A WIKI</span>
+                                <span>BEM VINDO</span>
                             </v-tooltip>
                         </template>
                                         

@@ -61,7 +61,7 @@ const resetDialog = () => {
     status_conservacao: state.opcoesStatus[5],
     continente_localizado: [] as Continentes[],
     tamanho_medio: 0,
-    descricao: 'Descreva características gerais necessárias.',
+    descricao: '',
     imagem_url: ''
   };
 
@@ -126,32 +126,51 @@ const resetDialog = () => {
       }
   }
 
-watch(() => props.especieEdicao, (novaEspecie) => {
-  if (novaEspecie) {
-    preencherEdicao(novaEspecie);
-  }
-});
-  // executa quando abre ou fecha o dialog(cadastrar/editar especie)
-watch(dialog, (val) =>{
-  emit('update:dialog', val);
-  console.log("abriu ou fechou")
-});
+  const imgSelecionada = ref<File[] |  undefined>(undefined);
 
-watch(
-  () => props.dialog,
-  (aberto) => {
-    if (aberto && props.especieEdicao) {
-      preencherEdicao(props.especieEdicao);
+  const carregarImg = async () => {
+    if (imgSelecionada.value && imgSelecionada.value.length > 0) {
+      const file = imgSelecionada.value[0];
+      const reader = new FileReader();
+      reader.onload = () => {
+        state.especie.imagem_url = reader.result as string;
+      };
+      reader.readAsDataURL(file);
     }
-    emit('update:dialog', aberto);
+  };
+  const removerImagem = () => {
+    state.especie.imagem_url = '';
+    imgSelecionada.value = undefined;
   }
-);
+
+  watch(() => props.especieEdicao, (novaEspecie) => {
+    if (novaEspecie) {
+      preencherEdicao(novaEspecie);
+    }
+  });
+    // executa quando abre ou fecha o dialog(cadastrar/editar especie)
+  watch(dialog, (val) =>{
+    emit('update:dialog', val);
+    console.log("abriu ou fechou")
+  });
+
+  watch(
+    () => props.dialog,
+    (aberto) => {
+      if (aberto && props.especieEdicao) {
+        preencherEdicao(props.especieEdicao);
+      }
+      emit('update:dialog', aberto);
+    }
+  );
 
 
 onMounted(async () => {
   if(props.especieEdicao){
     resetDialog();
     preencherEdicao(props.especieEdicao)
+    console.log(state.opcoesReino[5])
+    console.log(state.opcoesStatus[5])
   }
 });
 
@@ -311,22 +330,57 @@ onMounted(async () => {
 
                           
                          <v-col cols="12" >
-                            <v-textarea
-                              name="Descricao"
-                              variant="filled"
-                              label="Descrição Geral"
-                              v-model="state.especie.descricao"
-                              @input="limitarDescricao"
+                           <v-textarea
+                           name="Descricao"
+                           variant="filled"
+                           label="Descrição Geral"
+                            v-model="state.especie.descricao"
+                            @input="limitarDescricao"
                             ></v-textarea>
                           </v-col>
-
+                          
+                          <v-col cols="6">
+                            <v-file-input
+                              label="Imagem da Espécie"
+                              accept="image/*"
+                              v-model="imgSelecionada"
+                              @change="carregarImg"
+                              prepend-icon="mdi-image"
+                            ></v-file-input>
+                          </v-col>
+                          
+                        <v-row style="border: 1px black; ">
+                          <v-col cols="12" v-if="state.especie.imagem_url">
+                            <div class="text-center image-container">
+                              <v-img
+                                :src="state.especie.imagem_url"
+                                max-width="400"
+                                max-height="200"
+                                class="mx-auto"
+                                contain
+                              >   
+                                 <template v-slot:placeholder>
+                                  <v-row class="fill-height ma-0" align="center" justify="center">
+                                    <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+                                  </v-row>
+                                </template> 
+                                <v-btn 
+                                  icon
+                                  color="red" 
+                                  @click="removerImagem"
+                                  class="close-bt"
+                                  style="position: absolute; right: 15px; transform: translateX(30%);"
+                                  size="small"
+                                >
+                                  <v-icon>mdi-close</v-icon>
+                                </v-btn>
+                              </v-img>
+                            </div>
+                          </v-col>
+                        </v-row>
                   </v-row>
                 </v-container>
-
-                
-
-                </v-card-text>
-             
+              </v-card-text>
             </v-card>
         </v-dialog>
         

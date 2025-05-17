@@ -5,6 +5,7 @@
     import { onMounted, reactive, ref } from 'vue';
     import { useRoute } from 'vue-router';
     import DetalhesGerais from './abaDetalhes/DetalhesGerais.vue';
+    import Habitat from './abaDetalhes/Habitat.vue';
 
     const route = useRoute()
     const idR = route.params.id
@@ -62,8 +63,7 @@
 
       <v-window-item value="habitat">
         <v-card class="ma-4 pa-4 bg-light-green-darken-1">
-          <h3>Habitat</h3>
-          <p>{{ state.especie.descricao || 'Informação não disponível' }}</p>
+          <Habitat v-if="state.especie.id" :especie="state.especie" />
         </v-card>
       </v-window-item>
 

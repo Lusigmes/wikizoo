@@ -9,7 +9,9 @@
   }>();
   
   const especieVisivel = ref({ ...props.especie });
+
   const dialog = ref(false);
+
   const especieAtualSelecionada = ref<Especie | null>(null);
 
   const carregarDadosEspeciesNoForm = () => { //carregar dados da especie atual via emit
@@ -29,7 +31,7 @@
 <template>
   <v-card class="ma-4 pa-4">
     <v-row>
-      <v-col cols="3" md="4">
+            <v-col cols="3" md="4">
         <h3>Nome Comum:</h3>
         <p>{{ especieVisivel.nome_comum }}</p>
       </v-col>
@@ -65,15 +67,23 @@
         <h3>Tamanho:</h3>
         <p>{{ especieVisivel.tamanho_medio  }} cm</p>
       </v-col>
-      
-      <v-col cols="3" md="4">
-        <h3>IMG:</h3>
-        <p>{{ especieVisivel.imagem_url || "Não possui imagem" }}</p>
-      </v-col>
-      
+            
       <v-col cols="3" md="4">
         <h3>Descrição:</h3>
         <p>{{ especieVisivel.descricao || 'Informação não disponível' }}</p>
+      </v-col>
+<!-- dentro da aba detalhes gerais -->
+      <v-col cols="12" md="4">
+        <h3>Imagem de Capa:</h3>
+        <v-img
+          v-if="especieVisivel.imagem_url"
+          :src="especieVisivel.imagem_url"
+          max-width="300"
+          max-height="200"
+          class="rounded mx-auto"
+          contain
+          ></v-img>
+        <p v-else>Não possui imagem</p>
       </v-col>
     </v-row>
   </v-card>
