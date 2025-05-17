@@ -1,12 +1,14 @@
+import { Conservacao, Continentes, Reino } from "./enums"
+
 export interface Especie{
     id: number,
     nome_comum: string,
     nome_cientifico: string,
     autoridade_taxonomica: string,
-    reino: string[],
-    status_conservacao: string[],
+    reino: Reino,
+    status_conservacao: Conservacao,
     descricao: string
-    continente_localizado: string[],
+    continente_localizado: Continentes[],
     tamanho_medio: Number
     imagem_url?: string | null | undefined
     /* filo: string,

@@ -19,12 +19,13 @@
       "nome_cientifico": "bebeto",
       "autoridade_taxonomica": "rayssa",
       "reino": "Animalia",
-      "status_conservacao": "Seguro",
+      "status_conservacao": "Ameaçado",
       "continente_localizado": [
         "America do Norte"
       ],
       "tamanho_medio": "5",
-      "descricao": "o r oberrtinho"
+      "descricao": "o r oberrtinho",
+      "imagem_url": ""
     },
     {
       "id": 1747427282270,
@@ -45,14 +46,19 @@
       "id": 1747435278145,
       "nome_comum": "cachorro",
       "nome_cientifico": "cacho",
-      "autoridade_taxonomica": "ca",
-      "reino": "Plantae",
+      "autoridade_taxonomica": "ca chorro",
+      "reino": "Fungi",
       "status_conservacao": "Em Perigo",
       "continente_localizado": [
-        "America do Norte"
+        "America do Norte",
+        "America do Sul",
+        "África",
+        "Ásia",
+        "Oceania"
       ],
       "tamanho_medio": "14",
-      "descricao": "Descreva características gerais necessárias."
+      "descricao": "Descreva características gerais necessárias.",
+      "imagem_url": ""
     },
     {
       "id": 1747457463732,
@@ -69,82 +75,48 @@
       "imagem_url": ""
     },
     {
-      "id": 1747457559409,
-      "nome_comum": "1",
-      "nome_cientifico": "1",
-      "autoridade_taxonomica": "3",
-      "reino": "Monera",
-      "status_conservacao": "Seguro",
-      "continente_localizado": [],
-      "tamanho_medio": "1",
-      "descricao": "Descreva características gerais necessárias.",
-      "imagem_url": ""
-    },
-    {
-      "id": 1747459005757,
-      "nome_comum": "1",
-      "nome_cientifico": "1",
-      "autoridade_taxonomica": "3",
-      "reino": "M",
-      "status_conservacao": "S",
-      "continente_localizado": [],
-      "tamanho_medio": "1",
-      "descricao": "Descreva características gerais necessárias.",
-      "imagem_url": ""
-    },
-    {
-      "id": 1747459018734,
-      "nome_comum": "1",
-      "nome_cientifico": "1",
-      "autoridade_taxonomica": "3",
-      "reino": "M",
-      "status_conservacao": "S",
-      "continente_localizado": [],
-      "tamanho_medio": "1",
-      "descricao": "Descreva características gerais necessárias.",
-      "imagem_url": ""
-    },
-    {
-      "id": 1747459090941,
-      "nome_comum": "1",
-      "nome_cientifico": "1",
-      "autoridade_taxonomica": "3",
-      "reino": "M",
-      "status_conservacao": "S",
-      "continente_localizado": [],
-      "tamanho_medio": "1",
-      "descricao": "Descreva características gerais necessárias.",
-      "imagem_url": ""
-    },
-    {
-      "id": 1747459416817,
-      "nome_comum": "1",
-      "nome_cientifico": "1",
-      "autoridade_taxonomica": "3",
-      "reino": "M",
-      "status_conservacao": "S",
+      "id": 1747473146801,
+      "nome_comum": "Absurdo353",
+      "nome_cientifico": "novo",
+      "autoridade_taxonomica": "Logica",
+      "reino": "Animalia",
+      "status_conservacao": "Em Perigo",
       "continente_localizado": [
-        "Ásia",
-        "África",
-        "America do Norte"
+        "America do Sul",
+        "America do Norte",
+        "África"
       ],
-      "tamanho_medio": "1",
+      "tamanho_medio": "101",
       "descricao": "Descreva características gerais necessárias.",
       "imagem_url": ""
     },
     {
-      "id": 1747459416834,
-      "nome_comum": "1",
-      "nome_cientifico": "1",
-      "autoridade_taxonomica": "3",
-      "reino": "M",
-      "status_conservacao": "S",
+      "id": 1747475705149,
+      "nome_comum": "Fungo",
+      "nome_cientifico": "fungi",
+      "autoridade_taxonomica": "fungologo",
+      "reino": "Fungi",
+      "status_conservacao": "Ameaçado",
       "continente_localizado": [
-        "Ásia",
-        "África",
-        "America do Norte"
+        "Ásia"
       ],
-      "tamanho_medio": "1",
+      "tamanho_medio": "2",
+      "descricao": "Descreva características gerais necessárias.",
+      "imagem_url": ""
+    },
+    {
+      "id": 1747478027672,
+      "nome_comum": "LULA 12",
+      "nome_cientifico": "LULINHA",
+      "autoridade_taxonomica": "BRASIL",
+      "reino": "Animalia",
+      "status_conservacao": "Nâo Ameaçado",
+      "continente_localizado": [
+        "America do Sul",
+        "África",
+        "Ásia"
+      ],
+      "tamanho_medio": "14",
       "descricao": "Descreva características gerais necessárias.",
       "imagem_url": ""
     }

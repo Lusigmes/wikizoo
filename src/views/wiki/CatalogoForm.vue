@@ -5,26 +5,20 @@ import { Reino, Conservacao, Continentes} from '@/types/enums'
 import { useEspecieStore } from '@/store/EspecieStore';
 
 const especieStore = useEspecieStore();
-const emit = defineEmits(['update:dialog'])
-type Modo = 'cadastrar' | 'atualizar';
+// recebendo valores da especie selecinada
+const emit = defineEmits<{
+  (e: 'update:dialog', value: boolean): void;
+  (e: 'especie-atualizada', especie: Especie): void;
+}>();
 
+type Modo = 'cadastrar' | 'atualizar';
 const props = defineProps<{
   especieEdicao?: Especie | null,
   dialog?: boolean,
   modo? : Modo | string
 }>();
 
-let dialog = ref(props.dialog || false);
-watch(() => props.especieEdicao, (novaEspecie) => {
-  if (novaEspecie) {
-    preencherEdicao(novaEspecie);
-  }
-});
-  // executa quando abre ou fecha o dialog(cadastrar/editar especie)
-watch(dialog, (val) =>{
-  emit('update:dialog', val);
-  console.log("abriu ou fechou")
-});
+const dialog = ref(props.dialog || false);
 
 const state= reactive ({
   especie: {} as Especie,
@@ -40,8 +34,9 @@ const state= reactive ({
 
 const preencherEdicao = (especie: Especie) => {
   state.especie = {...especie};
-  state.reinoSelecionado = especie.reino[0] as Reino ?? null;
-  state.statusSelecionado = especie.status_conservacao[0] as Conservacao ?? null;
+
+  state.reinoSelecionado = especie.reino ?? null;
+  state.statusSelecionado = especie.status_conservacao ?? null;
   state.continenteSelecionado = especie.continente_localizado as Continentes[] ?? [];
 };
 
@@ -62,8 +57,8 @@ const resetDialog = () => {
     nome_comum: '',
     nome_cientifico: '',
     autoridade_taxonomica: '',
-    reino: [],
-    status_conservacao: [],
+    reino: state.opcoesReino[5],
+    status_conservacao: state.opcoesStatus[5],
     continente_localizado: [] as Continentes[],
     tamanho_medio: 0,
     descricao: 'Descreva características gerais necessárias.',
@@ -83,12 +78,12 @@ const resetDialog = () => {
     }
   }
 
-  // const emit = defineEmits(['animalAdicionado'])
-  const postEspecie = async () => {
-
+  const isSave = ref(false);
+  
+  const salvarEspecie = async () => {
+    if(isSave.value) return
+    isSave.value = true;
     try {
-      const response = await especieStore.carregarEspecies();
-      console.log("carregando no post",response)
 
       const nomeComumEspecie = state.especie.nome_comum.trim();
       const nomeCientificoEspecie = state.especie.nome_cientifico.trim();
@@ -101,38 +96,64 @@ const resetDialog = () => {
 
       if (!nomeComumEspecie || !nomeCientificoEspecie || !autoridadeTaxonomicaEspecie || !reinoEspecie || !statusConservacaoEspecie) {
         alert('Preencha todos os campos obrigatórios.');
+        isSave.value = false;
         return;
       }
-
-      const idGerado = Date.now();
-
-      const inputEspecie: any = {
-        id: idGerado,
-        nome_comum: nomeComumEspecie,
-        nome_cientifico: nomeCientificoEspecie,
-        autoridade_taxonomica: autoridadeTaxonomicaEspecie,
-        reino: reinoEspecie,
-        status_conservacao: statusConservacaoEspecie,
-        continente_localizado: continenteLocalizadoEspecie,
-        tamanho_medio: tamanhoEspecie,
-        descricao: descricaoEspecie,
-        imagem_url: state.especie.imagem_url ?? " "
-      }
-
+         
+        const inputEspecie: Especie = {
+          id: props.modo === 'atualizar' ? state.especie.id : Date.now(),
+          nome_comum: nomeComumEspecie,
+          nome_cientifico: nomeCientificoEspecie,
+          autoridade_taxonomica: autoridadeTaxonomicaEspecie,
+          reino: reinoEspecie,
+          status_conservacao: statusConservacaoEspecie,
+          continente_localizado: continenteLocalizadoEspecie,
+          tamanho_medio: tamanhoEspecie,
+          descricao: descricaoEspecie,
+          imagem_url: state.especie.imagem_url ?? ""
+        };
+        
+      
       if(props.modo === 'atualizar' && state.especie.id){
-        await especieStore.adicionarEspecie(inputEspecie);
-        alert("ATUALIZADO COM SUCESSO!")
+  
+        await especieStore.atualizarEspeciePorId(state.especie.id, inputEspecie);
+        emit('especie-atualizada', inputEspecie)
+        // alert("ATUALIZADO COM SUCESSO!")
       }else{
+
         await  especieStore.adicionarEspecie(inputEspecie)
-        alert("ADICIONADO COM SUCESSO!")
+        // alert("ADICIONADO COM SUCESSO!")
       }
-      // emit('animalAdicionado')
       closeDialog();
       
       } catch (error) {
           console.error(error);
+      }finally{
+        isSave.value = false;
       }
   }
+
+watch(() => props.especieEdicao, (novaEspecie) => {
+  if (novaEspecie) {
+    preencherEdicao(novaEspecie);
+  }
+});
+  // executa quando abre ou fecha o dialog(cadastrar/editar especie)
+watch(dialog, (val) =>{
+  emit('update:dialog', val);
+  console.log("abriu ou fechou")
+});
+
+watch(
+  () => props.dialog,
+  (aberto) => {
+    if (aberto && props.especieEdicao) {
+      preencherEdicao(props.especieEdicao);
+    }
+    emit('update:dialog', aberto);
+  }
+);
+
 
 onMounted(async () => {
   await carregarEspecies();
@@ -194,7 +215,8 @@ onMounted(async () => {
                     <v-btn
                       color="green-darken-1"
                       variant="text"
-                      @click="postEspecie"
+                      :loading="isSave"
+                      @click="salvarEspecie"
                     >
                        {{ props.modo === 'atualizar' ? 'Atualizar' : 'Salvar' }}
                       <v-icon

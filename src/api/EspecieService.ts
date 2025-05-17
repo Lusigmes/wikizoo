@@ -5,7 +5,8 @@ export const create = async (especie: any) : Promise<Especie> => {
   try {
 
     const response = await fetch(httpClient, {
-           method: 'post', headers: {'Content-type': 'application/json'},
+           method: 'post',
+           headers: {'Content-type': 'application/json'},
            body: JSON.stringify(especie)
          });
          
@@ -66,3 +67,18 @@ export const deletes = async (id: number): Promise<Especie | any> => {
 
 }
 
+export const atualizar = async (id: number, especie: Partial<Especie>): Promise<Especie> => {
+  try {
+    const response = await fetch(`${httpClient}/${id}`, {
+      method: 'put',
+      headers: {'Content-type': 'application/json'},
+      body: JSON.stringify(especie)
+    });
+    if(!response.ok){ throw new Error("ERRO AO ATUALIZAR")}
+    const data = await response.json();
+    return data
+  } catch (error) {
+    console.error("Erro ao atualizar espécie", error);
+    throw error;
+  }
+}

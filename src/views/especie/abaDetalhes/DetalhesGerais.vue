@@ -1,20 +1,27 @@
 <!-- src/components/especie/tabs/InformacoesGerais.vue -->
 <script setup lang="ts">
-import { Especie } from '@/types';
-import { ref } from 'vue';
-import CatalogoForm from '@/views/wiki/CatalogoForm.vue';
+  import { Especie } from '@/types';
+  import { ref, watch } from 'vue';
+  import CatalogoForm from '@/views/wiki/CatalogoForm.vue';
 
-const props = defineProps<{
-  especie: Especie
-}>();
+  const props = defineProps<{
+    especie: Especie
+  }>();
+  const especieVisivel = ref({ ...props.especie });
+  const dialog = ref(false);
+  const especieAtualSelecionada = ref<Especie | null>(null);
 
-const dialog = ref(false);
-const especieAtualSelecionada = ref<Especie | null>(null);
-
-const abrirEditarEspecie = () => {
-  especieAtualSelecionada.value = {...props.especie};
-  dialog.value = true
-}
+  const carregarDadosEspeciesNoForm = () => { //carregar dados da especie atual via emit
+    especieAtualSelecionada.value = {...props.especie};
+    dialog.value = true
+  }
+  const atualizarEspecie = (especieAtualizada: Especie) => {
+    especieVisivel.value = { ...especieAtualizada };
+  };
+  
+  watch(()=> props.especie, (nova) => {
+    especieVisivel.value = {...nova}
+  }, {immediate: true})
 </script>
 
 <template>
@@ -22,49 +29,49 @@ const abrirEditarEspecie = () => {
     <v-row>
       <v-col cols="3" md="4">
         <h3>Nome Comum:</h3>
-        <p>{{ especie.nome_comum }}</p>
+        <p>{{ especieVisivel.nome_comum }}</p>
       </v-col>
       
       <v-col cols="3" md="4">
         <h3>Nome Científico:</h3>
-        <p>{{ especie.nome_cientifico }}</p>
+        <p>{{ especieVisivel.nome_cientifico }}</p>
       </v-col>
       
       <v-col cols="3" md="4">
         <h3>Reino:</h3>
-        <p>{{ especie.reino  }}</p>
+        <p>{{ especieVisivel.reino  }}</p>
       </v-col>
       
       <v-col cols="3" md="4">
         <h3>Continente Localizado:</h3>
-        <p>{{ especie.continente_localizado}}</p>
+        <p>{{ Array.isArray(especieVisivel.continente_localizado) ? especieVisivel.continente_localizado.join(', ') : especieVisivel.continente_localizado }}</p>
       </v-col>
       
       
       <v-col cols="3" md="4">
         <h3>Autoridade Taxonomica:</h3>
-        <p>{{ especie.autoridade_taxonomica  }}</p>
+        <p>{{ especieVisivel.autoridade_taxonomica  }}</p>
         
       </v-col>
       
       <v-col cols="3" md="4">
         <h3>Status Conservação:</h3>
-        <p>{{ especie.status_conservacao  }}</p>
+        <p>{{ especieVisivel.status_conservacao  }}</p>
       </v-col>
       
       <v-col cols="3" md="4">
         <h3>Tamanho:</h3>
-        <p>{{ especie.tamanho_medio  }} cm</p>
+        <p>{{ especieVisivel.tamanho_medio  }} cm</p>
       </v-col>
       
       <v-col cols="3" md="4">
         <h3>IMG:</h3>
-        <p>{{ especie.imagem_url || "Não possui imagem" }}</p>
+        <p>{{ especieVisivel.imagem_url || "Não possui imagem" }}</p>
       </v-col>
       
       <v-col cols="3" md="4">
         <h3>Descrição:</h3>
-        <p>{{ especie.descricao || 'Informação não disponível' }}</p>
+        <p>{{ especieVisivel.descricao || 'Informação não disponível' }}</p>
       </v-col>
     </v-row>
     <!-- <v-row justify="end" class="mt-4">
@@ -76,7 +83,8 @@ const abrirEditarEspecie = () => {
     <CatalogoForm
     v-model:dialog="dialog"
     :especie-edicao="especieAtualSelecionada"
-    @update:dialog="abrirEditarEspecie"
+    @especie-atualizada="atualizarEspecie"
+    @update:dialog="carregarDadosEspeciesNoForm"
     modo="atualizar"
   />
 </template>

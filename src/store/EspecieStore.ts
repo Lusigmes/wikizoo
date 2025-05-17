@@ -74,14 +74,16 @@ export const useEspecieStore = defineStore("especie", {
 
         },
         async atualizarEspeciePorId(id: number, dadosAtualizados: Partial<Especie>): Promise<Especie> {
-            const especieExiste = this.especies
-                .find((e) => e.id === id);
+            // const especieExiste = this.especies.find((e) => e.id === id);
+            const especieExiste = this.getEspecieById(id);
             if(!especieExiste) {throw new Error("Especie não encontrada");}
+            
+            const especieAtualizada: Especie = {
+                ...especieExiste,
+                ...dadosAtualizados,
+            };
             try {
-                const atualizarEspecie = await especieService.create({
-                    ...especieExiste,
-                    ...dadosAtualizados
-                })
+                const atualizarEspecie = await especieService.atualizar(id, especieAtualizada)
 
                 const idx = this.especies.findIndex((e) => e.id === id);
                 if(idx !== -1){
