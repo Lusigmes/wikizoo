@@ -41,9 +41,11 @@ export enum PadraoCorporal{
 }
 
 export enum Continentes{
-    AMERICA_DO_NORTE = "America do Norte",
-    AMERICA_DO_SUL = "America do Sul",
+    AMERICA_DO_NORTE = "América do Norte",
+    AMERICA_DO_SUL = "América do Sul",
     AFRICA = "África",
+    EUROPA = "Europa",
     ASIA = "Ásia",
-    OCEANIA = "Oceania"
+    OCEANIA = "Oceania",
+    ANTARTIDA = "Antártida"
 }

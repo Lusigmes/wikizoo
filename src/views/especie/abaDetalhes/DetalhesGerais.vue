@@ -73,8 +73,8 @@
         <p>{{ especieVisivel.descricao || 'Informação não disponível' }}</p>
       </v-col>
 <!-- dentro da aba detalhes gerais -->
-      <v-col cols="12" md="4">
-        <h3>Imagem de Capa:</h3>
+      <v-col cols="12" md="3">
+        <!-- <h3>Imagem de Capa:</h3> -->
         <v-img
           v-if="especieVisivel.imagem_url"
           :src="especieVisivel.imagem_url"

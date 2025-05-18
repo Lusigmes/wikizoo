@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import CatalogoForm from "./CatalogoForm.vue"
 import { reactive, ref} from 'vue';
-import Especie from "@/views/especie/Especie.vue"
+import EspecieView from "@/views/especie/EspecieView.vue"
 import { itemListaCatalogo } from "@/api/ItemService";
 
 const itensBreadcrumb = reactive(itemListaCatalogo());
@@ -31,7 +31,7 @@ const especieRef = ref();
     </v-card>
     
     <v-card class="mt-5" elevation="1">
-        <Especie ref="especieRef"/>
+        <EspecieView ref="especieRef"/>
     </v-card>
     
 </template>

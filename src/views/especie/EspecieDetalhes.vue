@@ -50,8 +50,8 @@
      <v-tabs v-model="tab" class="bg-light-green-darken-2" dark>
         <v-tab value="aba-detalhes-gerais">Detalhes Gerais</v-tab>
         <v-tab value="habitat">Habitat</v-tab>
-        <v-tab value="alimentacao">Alimentação</v-tab>
-        <v-tab value="conservacao">Conservação</v-tab>
+        <v-tab value="galeria">Galeria</v-tab>
+        <v-tab value="historia">História</v-tab>
     </v-tabs>
 
     <v-window v-model="tab">
@@ -62,22 +62,22 @@
       </v-window-item>
 
       <v-window-item value="habitat">
-        <v-card class="ma-4 pa-4 bg-light-green-darken-1">
-          <Habitat v-if="state.especie.id" :especie="state.especie" />
+        <v-card class="ma-4 pa-4 ">
+          <Habitat v-if="state.especie.id" :especie  ="state.especie" />
         </v-card>
       </v-window-item>
 
-      <v-window-item value="alimentacao">
+      <v-window-item value="galeria">
         <v-card class="ma-4 pa-4 bg-light-green-darken-1">
-          <h3>Alimentação</h3>        
+          <h3>Galeria</h3>        
           <p>{{ (Array.isArray(state.especie.continente_localizado) ? state.especie.continente_localizado.join(', ') : state.especie.continente_localizado ) || 'Informação não disponível'}}</p>
 
         </v-card>
       </v-window-item>
 
-      <v-window-item value="conservacao">
+      <v-window-item value="historia">
         <v-card class="ma-4 pa-4 bg-light-green-darken-1">
-          <h3>Status de Conservação</h3>
+          <h3>Historia da Especie</h3>
           <p>{{ state.especie.status_conservacao || 'Informação não disponível' }}</p>
         </v-card>
       </v-window-item>

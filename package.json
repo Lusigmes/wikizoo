@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "@types/webfontloader": "^1.0.0",
+    "@vitejs/plugin-vue": "^5.2.4",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-typescript": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
