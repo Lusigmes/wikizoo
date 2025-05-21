@@ -1,13 +1,15 @@
 <script setup lang="ts">
-import { useEspecieStore } from '@/store/EspecieStore';
-import { storeToRefs } from 'pinia';
-import {onMounted} from 'vue'
+  import { useEspecieStore } from '@/store/EspecieStore';
+  import { Especie } from '@/types';
+  import { storeToRefs } from 'pinia';
+  import {onMounted, ref} from 'vue'
+  import CatalogoForm from '../wiki/CatalogoForm.vue';
 
-// const listaEspecies = ref<Array<Especie>>([]);
 
-const especieStore = useEspecieStore()
-const {listaEspeciesOrdenada } = storeToRefs(especieStore); 
-
+  const especieStore = useEspecieStore();
+  const {listaEspeciesOrdenada } = storeToRefs(especieStore); 
+  const especieSelecionada = ref<Especie | null >(null);
+  const dialogAberto = ref(false);
   const carregarEspecies = async() => {
     try {
       await especieStore.carregarEspecies();
@@ -15,7 +17,6 @@ const {listaEspeciesOrdenada } = storeToRefs(especieStore);
       console.error("Erro ao carregar espécie: ", error)
     }
   }
-
   
   const deleteEspecie = async (id:number) => {
     try {
@@ -26,13 +27,22 @@ const {listaEspeciesOrdenada } = storeToRefs(especieStore);
     }
   }
 
-// defineExpose({
-//   carregarEspecies
-// });
+  const editarEspecieLista = (especie: Especie) => {
+    especieSelecionada.value = especie;
+    dialogAberto.value = true;
 
-onMounted(async () => {
-  await carregarEspecies();
-});
+  }
+  
+  const fecharDialog = () => {
+    especieSelecionada.value = null;
+    dialogAberto.value = false;
+
+  }
+  
+
+  onMounted(async () => {
+    await carregarEspecies();
+  });
 
 </script>
 
@@ -71,15 +81,19 @@ onMounted(async () => {
         :key="item.id"
         >
         <!-- dentro da lista de especies -->
-        <td><v-img
-          v-if="item.imagem_url"
-          :src="item.imagem_url"
-          max-width="100"
-          max-height="50"
-          class="rounded mx-auto"
-          cover
-        ></v-img>
-        <p v-else>Não possui imagem</p></td>
+        <td>
+          <v-img
+            v-if="item.imagem_url"
+            :src="item.imagem_url"
+            max-width="160"
+            max-height="90"
+            width="160"
+            height="90"
+            class="rounded mx-auto"
+            cover
+          ></v-img>
+          <p v-else>Não possui imagem</p>
+        </td>
         <td>{{ item.nome_comum }}</td>
         <td>{{ item.nome_cientifico }}</td>
         <td>{{ item.autoridade_taxonomica }}</td>
@@ -88,7 +102,7 @@ onMounted(async () => {
         
     <td>
       <v-row justify="center"  dense>
-        <v-btn class="mx-1" color="blue-accent-1" size="small" icon>
+        <v-btn @click="editarEspecieLista(item)" class="mx-1" color="blue-accent-1" size="small" icon>
           <v-icon>mdi-pencil</v-icon>
         </v-btn>
         <v-btn class="mx-1" color="green-accent-1" size="small" icon @click="$router.push({path: `/wiki/especie/${item.id}`})">
@@ -106,5 +120,8 @@ onMounted(async () => {
     
   </v-table>
     </v-card>
+    <v-dialog v-model="dialogAberto" width="1000">
+      <CatalogoForm   modo="atualizar" :especie-edicao="especieSelecionada" @fechar="fecharDialog"/>
+    </v-dialog>
 </template>
 

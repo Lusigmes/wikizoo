@@ -16,7 +16,7 @@ const routes: RouteRecordRaw[] = [
                     {
                         path: 'catalogo',
                         name: 'Catalogo',
-                        component: () => import('@/views/wiki/Catalogo.vue')
+                        component: () => import('@/views/wiki/CatalogoView.vue')
                     },
                     {
                         path: 'especie',
@@ -28,6 +28,12 @@ const routes: RouteRecordRaw[] = [
                         name: 'EspecieDetalhes',
                         component: () => import('@/views/especie/EspecieDetalhes.vue')
                     },
+                    
+                    // { outra coisa
+                    //     path: 'especie/:id/editar',
+                    //     name: 'CatalogoForm',
+                    //     component: () => import('@/views/wiki/CatalogoForm.vue')
+                    // },
                     
                     
                     /* especie, especieDetalhes */

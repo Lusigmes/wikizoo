@@ -9,6 +9,7 @@ const especieStore = useEspecieStore();
 const emit = defineEmits<{
   (e: 'update:dialog', value: boolean): void;
   (e: 'especie-atualizada', especie: Especie): void;
+  (e: 'fechar'): void;
 }>();
 
 type Modo = 'cadastrar' | 'atualizar';
@@ -34,7 +35,6 @@ const state= reactive ({
 
 const preencherEdicao = (especie: Especie) => {
   state.especie = {...especie};
-
   state.reinoSelecionado = especie.reino ?? null;
   state.statusSelecionado = especie.status_conservacao ?? null;
   state.continenteSelecionado = especie.continente_localizado as Continentes[] ?? [];
@@ -49,6 +49,7 @@ const limitarDescricao = () => {
 const closeDialog = () => {
   resetDialog();
   dialog.value = false;
+  emit('fechar')
 };
 
 const resetDialog = () => {
@@ -68,6 +69,7 @@ const resetDialog = () => {
   state.statusSelecionado = null;
   state.reinoSelecionado = null;
   state.continenteSelecionado = [];
+  imgSelecionada.value = undefined;
 }
 
   const isSave = ref(false);
@@ -111,6 +113,7 @@ const resetDialog = () => {
   
         await especieStore.atualizarEspeciePorId(state.especie.id, inputEspecie);
         emit('especie-atualizada', inputEspecie)
+        emit('fechar')
         // alert("ATUALIZADO COM SUCESSO!")
       }else{
 
@@ -138,6 +141,7 @@ const resetDialog = () => {
       reader.readAsDataURL(file);
     }
   };
+  
   const removerImagem = () => {
     state.especie.imagem_url = '';
     imgSelecionada.value = undefined;

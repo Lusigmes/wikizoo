@@ -4,8 +4,8 @@
     import { Especie } from '@/types';
     import { onMounted, reactive, ref } from 'vue';
     import { useRoute } from 'vue-router';
-    import DetalhesGerais from './abaDetalhes/DetalhesGerais.vue';
-    import Habitat from './abaDetalhes/Habitat.vue';
+    import DetalhesGerais from './abaDetalhes/DetalhesGeraisView.vue';
+    import Habitat from './abaDetalhes/HabitatView.vue';
 
     const route = useRoute()
     const idR = route.params.id
@@ -19,20 +19,20 @@
     
     const carregarEspecie = async (id:number) => {
        try {
-            const response = await especieStore.buscarEspeciePorId(id);
-            state.especie = response
-            itensBreadcrumb[itensBreadcrumb.length - 1].title = state.especie.nome_comum;
+        const response = await especieStore.buscarEspeciePorId(id);
+        state.especie = response  
+        itensBreadcrumb[itensBreadcrumb.length - 1].title = state.especie.nome_comum
         } catch (error) { 
             console.error("Erro ao encontrar espécie por id: ", error)
 
         }
     }
 
-    onMounted(async () => {
-        const idAsNumber = parseInt(idR as string, 10); 
-        await carregarEspecie(idAsNumber); });
-
-
+  onMounted(async () => {
+    const idAsNumber = parseInt(idR as string, 10); 
+    await carregarEspecie(idAsNumber);
+  });
+  
 </script>
 
 <template>
@@ -49,7 +49,7 @@
     </v-card>
      <v-tabs v-model="tab" class="bg-light-green-darken-2" dark>
         <v-tab value="aba-detalhes-gerais">Detalhes Gerais</v-tab>
-        <v-tab value="habitat">Habitat</v-tab>
+        <v-tab value="habitat">Localização</v-tab>
         <v-tab value="galeria">Galeria</v-tab>
         <v-tab value="historia">História</v-tab>
     </v-tabs>
@@ -63,7 +63,7 @@
 
       <v-window-item value="habitat">
         <v-card class="ma-4 pa-4 ">
-          <Habitat v-if="state.especie.id" :especie  ="state.especie" />
+          <Habitat v-if="state.especie.id" :especie ="state.especie" />
         </v-card>
       </v-window-item>
 

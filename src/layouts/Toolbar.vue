@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
 
  
 const items = ref([
@@ -20,58 +19,58 @@ const items = ref([
 
 <template>
 
-<v-card class="bg-grey-lighten-1 align-start" flat height="100px"  rounded="0">
+    <v-card class="bg-grey-lighten-1 align-start" flat height="100px"  rounded="0">
+        
+        <v-toolbar  dense class="bg-grey-lighten-3 mt-3" elevation="2"
+                    extended extension-height="10" >
             
-            <v-toolbar  dense class="bg-grey-lighten-3 mt-3" elevation="2"
-                        extended extension-height="10" >
-                
-               <RouterLink :to="'/'">
-                <v-avatar class="ml-6 mt-2" rounded="0" size="50">
-                    <v-img src="@/assets/img/wild-animals.png" />
-                </v-avatar>
-               </RouterLink>
+            <RouterLink :to="'/'">
+            <v-avatar class="ml-6 mt-2" rounded="0" size="50">
+                <v-img src="@/assets/img/wild-animals.png" />
+            </v-avatar>
+            </RouterLink>
 
-                <v-toolbar-title class="text-h4 ml-2 mt-2 font-weight-bold text-green"></v-toolbar-title>
-              
-                                        <!-- MENU DE ROTAS ? -->
-                <div class="text-center">
-                    <v-menu>
-                        <template v-slot:activator="{ props: menu }">
-                                            
-                            <v-tooltip location="left">
-                                <template v-slot:activator="{ props: tooltip }">
-                                    <v-btn  class="bg-blue-accent-3 mr-6 mt-2" color="black-accent-3" elevation="1"
-                                        :="mergeProps(menu, tooltip)" >
-                                        <div> {{ img }}</div>
-                                     </v-btn>
-                                </template>
-                                            
-                                <span>BEM VINDO</span>
-                            </v-tooltip>
-                        </template>
+            <v-toolbar-title class="text-h4 ml-2 mt-2 font-weight-bold text-green"></v-toolbar-title>
+            
+                                    <!-- MENU DE ROTAS ? -->
+            <div class="text-center">
+                <v-menu>
+                    <template v-slot:activator="{ props: menu }">
                                         
-                        <v-list>
+                        <v-tooltip location="left">
+                            <template v-slot:activator="{ props: tooltip }">
+                                <v-btn  class="bg-blue-accent-3 mr-6 mt-2" color="black-accent-3" elevation="1"
+                                    :="mergeProps(menu, tooltip)" >
+                                    <div> {{ img }}</div>
+                                    </v-btn>
+                            </template>
+                                        
+                            <span>BEM VINDO</span>
+                        </v-tooltip>
+                    </template>
+                                    
+                    <v-list>
 
-                            <v-list-item v-for="(item, index) in items" :key="index">
+                        <v-list-item v-for="(item, index) in items" :key="index">
 
-                                                    <v-list-item-title> 
-                                                        <RouterLink :to="item.link">
-                                                            <v-btn class="text-blue-accent-3" elevation="0" > 
-                                                                {{ item.title }}
-                                                            </v-btn> 
-                                                        </RouterLink>
-                                                    </v-list-item-title>
+                                                <v-list-item-title> 
+                                                    <RouterLink :to="item.link">
+                                                        <v-btn class="text-blue-accent-3" elevation="0" > 
+                                                            {{ item.title }}
+                                                        </v-btn> 
+                                                    </RouterLink>
+                                                </v-list-item-title>
 
-                            </v-list-item>
+                        </v-list-item>
 
-                        </v-list>
-                    </v-menu>
-                </div>                            
-                    
-                  
+                    </v-list>
+                </v-menu>
+            </div>                            
                 
-            </v-toolbar>
-        </v-card>
+                
+            
+        </v-toolbar>
+    </v-card>
 
 
 </template>

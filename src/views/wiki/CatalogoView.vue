@@ -4,12 +4,10 @@ import { reactive, ref} from 'vue';
 import EspecieView from "@/views/especie/EspecieView.vue"
 import { itemListaCatalogo } from "@/api/ItemService";
 
+// o nome comum da especie caarregada aqui nao atualiza dinamicamente ao atualizar o nome comum da especie
+// precisa atualizar a pagina para o nome atualizar
 const itensBreadcrumb = reactive(itemListaCatalogo());
 const especieRef = ref();
-
-// function atualizarListaEspecies() {
-//   especieRef.value?.carregarEspecies(); // chama o método do componente Especie
-// }
 
 </script>
 

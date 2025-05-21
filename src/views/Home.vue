@@ -21,6 +21,6 @@
     </v-card>
     
     <v-card>
-        <h1>CONTEUDO HOME aqe</h1>
+        <h1>CONTEUDO HOME</h1>
     </v-card>
 </template>
