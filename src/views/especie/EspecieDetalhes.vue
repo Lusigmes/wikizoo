@@ -1,6 +1,7 @@
 <script setup lang="ts">
     import { itemListaEspecieDetalhes } from '@/api/ItemService';
-    import { useEspecieStore } from '@/store/EspecieStore';
+    // import { useEspecieStore } from '@/store/EspecieStore';
+    import { useEspecie } from '@/store/StoreTeste';
     import { Especie } from '@/types';
     import { onMounted, reactive, ref } from 'vue';
     import { useRoute } from 'vue-router';
@@ -9,7 +10,9 @@
 
     const route = useRoute()
     const idR = route.params.id
-    const especieStore = useEspecieStore()
+    // const especieStore = useEspecieStore()
+    const teste1EspecieStore = useEspecie("teste1");
+    const teste2EspecieStore = useEspecie("teste2");
     const itensBreadcrumb = reactive(itemListaEspecieDetalhes())
     const tab = ref('aba-detalhes-gerais')
     
@@ -19,7 +22,8 @@
     
     const carregarEspecie = async (id:number) => {
        try {
-        const response = await especieStore.buscarEspeciePorId(id);
+        // const response = await especieStore.buscarEspeciePorId(id);
+        const response = await teste1EspecieStore.buscar(id);
         state.especie = response  
         itensBreadcrumb[itensBreadcrumb.length - 1].title = state.especie.nome_comum
         } catch (error) { 

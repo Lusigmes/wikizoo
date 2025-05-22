@@ -4,15 +4,23 @@
   import { storeToRefs } from 'pinia';
   import {onMounted, ref} from 'vue'
   import CatalogoForm from '../wiki/CatalogoForm.vue';
+  import { useEspecie } from '@/store/StoreTeste';
 
+  const especieStore = useEspecieStore(); // optei por instanciar pois fiquei em duvida sobre oq fazer com storetorefs
 
-  const especieStore = useEspecieStore();
+  const teste1EspecieStore = useEspecie("teste1");
+  const teste2EspecieStore = useEspecie("teste2");
+  
   const {listaEspeciesOrdenada } = storeToRefs(especieStore); 
+
   const especieSelecionada = ref<Especie | null >(null);
+
   const dialogAberto = ref(false);
+
   const carregarEspecies = async() => {
     try {
-      await especieStore.carregarEspecies();
+      await teste1EspecieStore.carregar();
+      // await especieStore.carregarEspecies();
     } catch (error) {
       console.error("Erro ao carregar espécie: ", error)
     }
@@ -20,7 +28,9 @@
   
   const deleteEspecie = async (id:number) => {
     try {
-        await especieStore.deletarEspeciesPorId(id);       
+        // await especieStore.deletarEspeciesPorId(id);      
+        await teste2EspecieStore.remover(id);
+
         alert("REMOVIDO COM SUCESSO!")
       }catch (error) { 
         console.error("Erro ao remover espécie: ", error)

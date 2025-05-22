@@ -3,6 +3,7 @@ import { Especie } from "@/types";
 import * as especieService from "@/api/EspecieService";
 
 export const useEspecieStore = defineStore("especie", {
+// export const useEspecieStore = defineStore("especie", {
     state:() => ({
         especies: [] as Especie[],
         // especieSelecionada: null as Especie | null,
@@ -60,7 +61,7 @@ export const useEspecieStore = defineStore("especie", {
                 throw new Error("Erro ao deletar espécie.")
             }
         },
-        async buscarEspeciePorId(id: number){
+        async buscarEspeciePorId(id: number): Promise<Especie>{
             try {
                 const especie = await especieService.getById(id);
                 // console.log("especie[store]", especie)

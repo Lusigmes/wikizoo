@@ -2,9 +2,14 @@
 import { ref, reactive, onMounted, watch } from 'vue';
 import { Especie } from '@/types/index'
 import { Reino, Conservacao, Continentes} from '@/types/enums'
-import { useEspecieStore } from '@/store/EspecieStore';
+// import { useEspecieStore } from '@/store/EspecieStore';
+import {useEspecie} from '@/store/StoreTeste'
 
-const especieStore = useEspecieStore();
+// const especieStore = useEspecieStore();
+
+const teste1EspecieStore = useEspecie("teste1");
+const teste2EspecieStore = useEspecie("teste2");
+
 // recebendo valores da especie selecinada
 const emit = defineEmits<{
   (e: 'update:dialog', value: boolean): void;
@@ -111,13 +116,14 @@ const resetDialog = () => {
       
       if(props.modo === 'atualizar' && state.especie.id){
   
-        await especieStore.atualizarEspeciePorId(state.especie.id, inputEspecie);
+        // await especieStore.atualizarEspeciePorId(state.especie.id, inputEspecie);
+        await teste1EspecieStore.atualizar(state.especie.id, inputEspecie);
         emit('especie-atualizada', inputEspecie)
         emit('fechar')
         // alert("ATUALIZADO COM SUCESSO!")
       }else{
-
-        await  especieStore.adicionarEspecie(inputEspecie)
+        await  teste2EspecieStore.adicionar(inputEspecie)
+        // await especieStore.adicionarEspecie(inputEspecie);
         // alert("ADICIONADO COM SUCESSO!")
       }
       closeDialog();
